@@ -118,31 +118,45 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="Total Patients"
-          value={stats?.stats?.total_patients || 0}
-          icon={<UserGroupIcon className="h-6 w-6 text-medical-primary" />}
-          color="text-medical-primary"
-          bgColor="bg-primary/10"
+          value={stats?.total_patients || 0}
+          icon={<UserCircleIcon className="h-8 w-8" />}
+          color="medical-primary"
+          bgColor="medical-primary"
         />
         <StatCard
-          title="Today's Appointments"
-          value={stats?.stats?.today_appointments || 0}
-          icon={<CalendarIcon className="h-6 w-6 text-medical-success" />}
-          color="text-medical-success"
-          bgColor="bg-medical-success/10"
+          title="Total Doctors"
+          value={stats?.total_doctors || 0}
+          icon={<UserGroupIcon className="h-8 w-8" />}
+          color="medical-success"
+          bgColor="medical-success"
         />
         <StatCard
-          title="Occupied Beds"
-          value={stats?.stats?.occupied_beds || "0/0"}
-          icon={<BuildingOfficeIcon className="h-6 w-6 text-medical-warning" />}
-          color="text-medical-warning"
-          bgColor="bg-medical-warning/10"
+          title="Total Appointments"
+          value={stats?.total_appointments || 0}
+          icon={<CalendarIcon className="h-8 w-8" />}
+          color="medical-warning"
+          bgColor="medical-warning"
         />
         <StatCard
-          title="Active Doctors"
-          value={stats?.stats?.active_doctors || 0}
-          icon={<UserCircleIcon className="h-6 w-6 text-medical-secondary" />}
-          color="text-medical-secondary"
-          bgColor="bg-medical-secondary/10"
+          title="Scheduled"
+          value={stats?.scheduled_appointments || 0}
+          icon={<CalendarIcon className="h-8 w-8" />}
+          color="medical-info"
+          bgColor="medical-info"
+        />
+        <StatCard
+          title="Completed"
+          value={stats?.completed_appointments || 0}
+          icon={<CalendarIcon className="h-8 w-8" />}
+          color="medical-success"
+          bgColor="medical-success"
+        />
+        <StatCard
+          title="Departments"
+          value={stats?.departments_count || 0}
+          icon={<BuildingOfficeIcon className="h-8 w-8" />}
+          color="medical-secondary"
+          bgColor="medical-secondary"
         />
       </div>
 

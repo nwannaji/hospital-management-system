@@ -16,7 +16,9 @@ function AppointmentsPage() {
   const fetchAppointments = async () => {
     try {
       const data = await api.getAppointments();
-      setAppointments(data);
+      console.log('DEBUG: Appointments data received:', data);
+      // Handle paginated response from Django REST Framework
+      setAppointments(data.results || data);
     } catch (error) {
       console.error('Failed to fetch appointments:', error);
     } finally {
@@ -61,10 +63,10 @@ function AppointmentsPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
+        <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--foreground))'}}>Appointments</h1>
         <button
           onClick={handleCreateAppointment}
-          className="btn-medical flex items-center gap-2"
+          className="btn-schedule-appointment flex items-center gap-2"
         >
           <PlusIcon className="h-5 w-5" />
           Schedule Appointment
@@ -74,90 +76,96 @@ function AppointmentsPage() {
       <div className="medical-card">
         <div className="medical-card-content">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="medical-table">
               <thead>
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="medical-table-header">
                     Date & Time
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="medical-table-header">
                     Patient
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="medical-table-header">
                     Doctor
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="medical-table-header">
                     Type
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="medical-table-header">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="medical-table-header">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
-                {appointments.map((appointment) => (
-                  <tr key={appointment.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <CalendarIcon className="h-5 w-5 text-gray-400 mr-2" />
-                        <div>
-                          <div className="text-sm font-medium text-gray-900">
-                            {new Date(appointment.appointmentDate).toLocaleDateString()}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {appointment.appointmentTime}
+              <tbody>
+                {appointments.map((appointment) => {
+                  console.log('DEBUG: Processing appointment:', appointment);
+                  return (
+                  <tr key={appointment.id} className="medical-table-row">
+                    <td className="medical-table-cell">
+                      <div className="medical-card">
+                        <div className="flex items-center">
+                          <CalendarIcon className="h-5 w-5 mr-2" style={{color: 'hsl(var(--muted-foreground))'}} />
+                          <div>
+                            <div className="text-sm font-medium" style={{color: 'hsl(var(--foreground))'}}>
+                              {new Date(appointment.appointment_date).toLocaleDateString()}
+                            </div>
+                            <div className="text-sm" style={{color: 'hsl(var(--muted-foreground))'}}>
+                              {appointment.appointment_time}
+                            </div>
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {appointment.patient?.firstName} {appointment.patient?.lastName}
+                    <td className="medical-table-cell">
+                      <div className="medical-card">
+                        <div className="text-sm font-medium" style={{color: 'hsl(var(--foreground))'}}>
+                          {appointment.patient?.first_name || appointment.patient?.firstName || 'N/A'} {appointment.patient?.last_name || appointment.patient?.lastName || ''}
+                        </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        Dr. {appointment.doctor?.firstName} {appointment.doctor?.lastName}
+                    <td className="medical-table-cell">
+                      <div className="text-sm font-medium" style={{color: 'hsl(var(--foreground))'}}>
+                        Dr. {appointment.doctor?.first_name || appointment.doctor?.firstName || 'N/A'} {appointment.doctor?.last_name || appointment.doctor?.lastName || ''}
                       </div>
-                      <div className="text-sm text-gray-500">
-                        {appointment.doctor?.specialization}
+                      <div className="text-sm" style={{color: 'hsl(var(--muted-foreground))'}}>
+                        {appointment.doctor?.specialization || 'N/A'}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
-                        {appointment.type}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    <td className="medical-table-cell">
+                      <span className={`medical-badge ${
                         appointment.status === 'scheduled' 
-                          ? 'bg-blue-100 text-blue-800'
+                          ? 'medical-badge-stable'
                           : appointment.status === 'completed'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
+                          ? 'medical-badge-recovery'
+                          : 'medical-badge-critical'
                       }`}>
                         {appointment.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button
-                        onClick={() => handleEditAppointment(appointment)}
-                        className="text-indigo-600 hover:text-indigo-900 mr-3"
-                      >
-                        <PencilIcon className="h-4 w-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteAppointment(appointment.id)}
-                        className="text-red-600 hover:text-red-900"
-                      >
-                        <TrashIcon className="h-4 w-4" />
-                      </button>
+                    <td className="medical-table-cell">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleEditAppointment(appointment)}
+                          className="action-button edit"
+                          title="Edit Appointment"
+                        >
+                          <PencilIcon className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteAppointment(appointment.id)}
+                          className="action-button delete"
+                          title="Delete Appointment"
+                        >
+                          <TrashIcon className="h-4 w-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>

@@ -40,14 +40,6 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
         // International Healthcare Colors
         "medical-primary": "hsl(var(--medical-primary))",
         "medical-success": "hsl(var(--medical-success))",
@@ -102,7 +94,26 @@ export default {
           "100%": { transform: "translateY(0)", opacity: "1" },
         },
       },
+      backdropBlur: {
+        xs: '2px',
+      },
+      boxShadow: {
+        'medical-card': '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+        'medical-card-hover': '0 8px 12px -2px rgb(0 0 0 / 0.15)',
+        'medical-modal': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+      },
+      transitionTimingFunction: {
+        'medical-bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+      },
+      screens: {
+        'medical-mobile': '640px',
+        'medical-tablet': '768px',
+        'medical-desktop': '1024px',
+        'medical-wide': '1280px',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    // Add any Tailwind plugins here
+  ],
 }

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import api from '../api';
 
 function AppointmentModal({ isOpen, onClose, onSuccess, editingAppointment }) {
   const [formData, setFormData] = useState({
-    patientId: '',
-    doctorId: '',
+    patientId: '9ddd1311-8b6e-4b07-b617-669a08442ffd',
+    doctorId: '646f72a7-5b6b-4613-8610-675ac9ab2720',
     appointmentDate: '',
     appointmentTime: '',
     type: 'Checkup',
@@ -18,8 +19,8 @@ function AppointmentModal({ isOpen, onClose, onSuccess, editingAppointment }) {
       setFormData(editingAppointment);
     } else {
       setFormData({
-        patientId: '',
-        doctorId: '',
+        patientId: '9ddd1311-8b6e-4b07-b617-669a08442ffd',
+        doctorId: '646f72a7-5b6b-4613-8610-675ac9ab2720',
         appointmentDate: '',
         appointmentTime: '',
         type: 'Checkup',
@@ -30,6 +31,7 @@ function AppointmentModal({ isOpen, onClose, onSuccess, editingAppointment }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log('Form change:', name, '=', value);
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -43,12 +45,19 @@ function AppointmentModal({ isOpen, onClose, onSuccess, editingAppointment }) {
 
     try {
       console.log('Submitting appointment:', formData);
+      
+      if (editingAppointment) {
+        await api.updateAppointment(editingAppointment.id, formData);
+      } else {
+        await api.createAppointment(formData);
+      }
+      
       onSuccess?.();
       onClose();
       if (!editingAppointment) {
         setFormData({
-          patientId: '',
-          doctorId: '',
+          patientId: '9ddd1311-8b6e-4b07-b617-669a08442ffd',
+          doctorId: '646f72a7-5b6b-4613-8610-675ac9ab2720',
           appointmentDate: '',
           appointmentTime: '',
           type: 'Checkup',
@@ -63,6 +72,8 @@ function AppointmentModal({ isOpen, onClose, onSuccess, editingAppointment }) {
   };
 
   if (!isOpen) return null;
+
+  console.log('Current form data:', formData);
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -112,8 +123,7 @@ function AppointmentModal({ isOpen, onClose, onSuccess, editingAppointment }) {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-medical-primary focus:border-transparent"
                   >
                     <option value="">Select Patient</option>
-                    <option value="1">John Doe</option>
-                    <option value="2">Jane Smith</option>
+                    <option value="9ddd1311-8b6e-4b07-b617-669a08442ffd">test test1</option>
                   </select>
                 </div>
                 <div>
@@ -129,8 +139,7 @@ function AppointmentModal({ isOpen, onClose, onSuccess, editingAppointment }) {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-medical-primary focus:border-transparent"
                   >
                     <option value="">Select Doctor</option>
-                    <option value="1">Dr. Alice Johnson (Cardiology)</option>
-                    <option value="2">Dr. Bob Wilson (Neurology)</option>
+                    <option value="646f72a7-5b6b-4613-8610-675ac9ab2720">Dr. Alice Johnson (Cardiology)</option>
                   </select>
                 </div>
               </div>

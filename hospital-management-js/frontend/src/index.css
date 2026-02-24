@@ -89,6 +89,21 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 83.9% 53.3%;
+
+    /* International Healthcare Colors - Dark */
+    --medical-primary: 210 40% 98%; /* Medical Blue - Light */
+    --medical-success: 142 71% 45%; /* Health Green - Same */
+    --medical-warning: 38 92% 50%; /* Alert Orange - Same */
+    --medical-danger: 0 84% 60%; /* Emergency Red - Same */
+    --medical-info: 199 89% 48%; /* Info Cyan - Same */
+    --medical-secondary: 258 84% 67%; /* Purple Accent - Same */
+
+    /* Clinical Status Colors - Dark */
+    --critical: 0 84% 60%; /* Critical - Red */
+    --urgent: 38 92% 50%; /* Urgent - Orange */
+    --stable: 142 71% 45%; /* Stable - Green */
+    --recovery: 199 89% 48%; /* Recovery - Blue */
+    --discharged: 210 40% 98%; /* Discharged - Light Gray */
   }
 
   body {
@@ -150,17 +165,19 @@
     color: hsl(var(--muted-foreground));
   }
 
-  /* Medical Card Styles */
+  /* Medical Card Styles - Enhanced with Tailwind 4.0 */
   .medical-card {
     background-color: hsl(var(--card));
     border: 1px solid hsl(var(--border));
     border-radius: 0.5rem;
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     transition: box-shadow 0.15s ease-in-out;
+    backdrop-filter: blur(8px);
   }
 
   .medical-card:hover {
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    box-shadow: 0 8px 12px -2px rgb(0 0 0 / 0.15);
+    transform: translateY(-1px);
   }
 
   .medical-card-header {
@@ -172,18 +189,131 @@
     padding: 1.5rem;
   }
 
-  /* Button Variants */
+  /* Button Variants - Enhanced with Tailwind 4.0 */
   .btn-medical {
     background-color: hsl(var(--medical-primary));
-    color: white;
+    color: white !important;
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
     font-weight: 500;
     transition: background-color 0.15s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-medical::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .btn-medical:hover::before {
+    opacity: 1;
   }
 
   .btn-medical:hover {
     background-color: hsl(var(--medical-primary) / 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 12px -2px rgb(0 0 0 / 0.2);
+  }
+
+  .btn-medical:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+
+  /* Schedule Appointment Button - High Contrast */
+  .btn-schedule-appointment {
+    background-color: hsl(210 100% 50%) !important;
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+
+  .btn-schedule-appointment:hover {
+    background-color: hsl(210 100% 45%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 12px -2px rgb(0 0 0 / 0.2);
+  }
+
+  .btn-schedule-appointment:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+
+  /* Dark mode specific button styling */
+  .dark .btn-schedule-appointment {
+    background-color: hsl(210 100% 40%) !important; /* Even darker for dark mode */
+    color: white !important;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+  }
+
+  .dark .btn-schedule-appointment:hover {
+    background-color: hsl(210 100% 35%) !important; /* Even darker on hover */
+    box-shadow: 0 8px 12px -2px rgb(0 0 0 / 0.4);
+  }
+
+  /* Add Department Button - High Contrast */
+  .btn-add-department {
+    background-color: hsl(var(--medical-primary)) !important;
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+
+  .btn-add-department:hover {
+    background-color: hsl(var(--medical-primary) / 0.9) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 12px -2px rgb(0 0 0 / 0.2);
+  }
+
+  .btn-add-department:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+
+  /* Dark mode specific button styling */
+  .dark .btn-add-department {
+    background-color: hsl(var(--medical-primary) / 0.8) !important; /* Darker for dark mode */
+    color: white !important;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+  }
+
+  .dark .btn-add-department:hover {
+    background-color: hsl(var(--medical-primary) / 0.7) !important; /* Even darker on hover */
+    box-shadow: 0 8px 12px -2px rgb(0 0 0 / 0.4);
   }
 
   .btn-success {
@@ -223,5 +353,152 @@
 
   .btn-danger:hover {
     background-color: hsl(var(--medical-danger) / 0.9);
+  }
+
+  /* Enhanced Medical Components with Tailwind 4.0 */
+  .medical-badge {
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium;
+  }
+
+  .medical-badge-critical {
+    background-color: hsl(var(--critical));
+    color: white;
+  }
+
+  .medical-badge-urgent {
+    background-color: hsl(var(--urgent));
+    color: white;
+  }
+
+  .medical-badge-stable {
+    background-color: hsl(var(--stable));
+    color: white;
+  }
+
+  .medical-badge-recovery {
+    background-color: hsl(var(--recovery));
+    color: white;
+  }
+
+  /* Enhanced Form Controls */
+  .medical-input {
+    @apply w-full px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+    background-color: hsl(var(--input));
+    border-color: hsl(var(--border));
+    color: hsl(var(--foreground));
+  }
+
+  .medical-select {
+    @apply w-full px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+    background-color: hsl(var(--input));
+    border-color: hsl(var(--border));
+    color: hsl(var(--foreground));
+  }
+
+  /* Enhanced Modal Styles */
+  .medical-modal-overlay {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-50;
+  }
+
+  .medical-modal-content {
+    @apply rounded-lg shadow-xl max-w-md mx-auto my-4 p-6;
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+  }
+
+  /* Enhanced Table Styles */
+  .medical-table {
+    @apply min-w-full divide-y;
+    border-color: hsl(var(--border));
+  }
+
+  .medical-table-header {
+    @apply px-6 py-3 text-left text-xs font-medium uppercase tracking-wider;
+    color: hsl(var(--muted-foreground));
+    background-color: hsl(var(--muted));
+  }
+
+  .medical-table-row {
+    @apply transition-colors duration-200;
+  }
+
+  .medical-table-row:hover {
+    background-color: hsl(var(--accent));
+  }
+
+  .medical-table-cell {
+    @apply px-6 py-4 whitespace-nowrap text-sm;
+    color: hsl(var(--foreground));
+  }
+
+  /* Action Buttons Styling */
+  .action-button {
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .action-button:hover {
+    transform: scale(1.1);
+  }
+
+  .action-button.edit {
+    color: hsl(var(--medical-primary));
+  }
+
+  .action-button.edit:hover {
+    background-color: hsl(var(--medical-primary) / 0.1);
+  }
+
+  .action-button.delete {
+    color: hsl(var(--medical-danger));
+  }
+
+  .action-button.delete:hover {
+    background-color: hsl(var(--medical-danger) / 0.1);
+  }
+
+  .dark .action-button.edit:hover {
+    background-color: hsl(var(--medical-primary) / 0.2);
+  }
+
+  .dark .action-button.delete:hover {
+    background-color: hsl(var(--medical-danger) / 0.2);
+  }
+
+  /* Enhanced Loading States */
+  .medical-loading {
+    @apply animate-pulse;
+  }
+
+  .medical-skeleton {
+    @apply rounded;
+    background-color: hsl(var(--muted));
+    animation: medical-shimmer 2s infinite;
+  }
+
+  /* Enhanced Animations */
+  @keyframes medical-shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* Enhanced Responsive Design */
+  .medical-grid {
+    @apply grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .medical-container {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
   }
 }

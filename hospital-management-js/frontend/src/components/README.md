@@ -12,7 +12,7 @@ This directory contains all the React components for the Hospital Management Sys
 ### Modal Components
 
 - **PatientModal.jsx** - Modal for adding/editing patients
-- **AppointmentModal.jsx** - Modal for scheduling appointments
+- **AppointmentModalStyled.jsx** - Modal for scheduling appointments
 
 ### List Components
 

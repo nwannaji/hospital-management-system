@@ -24,7 +24,8 @@ function PatientsPage() {
   const fetchPatients = async () => {
     try {
       const data = await api.getPatients();
-      setPatients(data);
+      // Handle paginated response from Django REST Framework
+      setPatients(data.results || data);
     } catch (error) {
       console.error('Failed to fetch patients:', error);
     } finally {
